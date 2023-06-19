@@ -6,7 +6,6 @@ const HistoryTableContainer = styled(TableContainer)(({ theme }) => ({
 }));
 
 export default function HistoryTable({ historicalData }) {
-  console.log(historicalData)
   return (
     <HistoryTableContainer component={Paper}>
       <Table>

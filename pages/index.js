@@ -72,8 +72,24 @@ export default function Dashboard() {
         if (snapshot.exists()) {
           const data = snapshot.val();
           const history = Object.values(data);
-          console.log(history);
           setHistoricalData(history);
+        } else {
+          console.log("No historical data available");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const fetchOutHistoricalData = async () => {
+      try {
+        const snapshot = await get(child(dbRef, "out_history"));
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          const history = Object.values(data);
+          console.log("Out");
+          console.log(history);
+          setOutHistoricalData(history);
         } else {
           console.log("No historical data available");
         }
@@ -90,7 +106,6 @@ export default function Dashboard() {
             let notificationList = Object.values(data);
             notificationList = notificationList.filter(item => item.timestamp);
             const sortedNotifications = notificationList.sort((a, b) => {
-              console.log(a, b)
               // Convert the date and time strings to Date objects for comparison
               const dateA = new Date(a.timestamp.date + " " + a.timestamp.time);
               const dateB = new Date(b.timestamp.date + " " + b.timestamp.time);
@@ -105,32 +120,46 @@ export default function Dashboard() {
       } catch (error) {
         console.error(error);
       }
-    };
-
-    const realtimeListener = onValue(child(dbRef, "history"), (snapshot) => {
+    }
+    onValue(child(dbRef, "history"), (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.val();
-        const history = Object.values(data);
+        let history = Object.values(data);
+        history = history.filter(item => item.timestamp);
+        const sorted = history.sort((a, b) => {
+          // Convert the date and time strings to Date objects for comparison
+          const dateA = new Date(a.timestamp.date + " " + a.timestamp.time);
+          const dateB = new Date(b.timestamp.date + " " + b.timestamp.time);
+          return dateB - dateA; // Sort in descending order (most recent first)
+        });
         setHistoricalData(history);
       } else {
         console.log("No historical data available");
       }
     });
 
-    const realtimeListenerForOut = onValue(child(dbRef, "out_history"), (snapshot) => {
+    onValue(child(dbRef, "out_history"), (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.val();
-        const history = Object.values(data);
-        setOutHistoricalData(history);
+        let history = Object.values(data);
+        history = history.filter(item => item.timestamp);
+        const sorted = history.sort((a, b) => {
+          // Convert the date and time strings to Date objects for comparison
+          const dateA = new Date(a.timestamp.date + " " + a.timestamp.time);
+          const dateB = new Date(b.timestamp.date + " " + b.timestamp.time);
+          return dateB - dateA; // Sort in descending order (most recent first)
+        });
+        setHistoricalData(history);
       } else {
         console.log("No historical data available");
       }
     });
   
-    fetchHistoricalData();
+    //fetchHistoricalData();
+    //fetchOutHistoricalData();
     fetchNotifications();
-    realtimeListener();
-    realtimeListenerForOut()
+    //realtimeListener();
+    //realtimeListenerForOut()
     fetchTempData();
   }, []);
 

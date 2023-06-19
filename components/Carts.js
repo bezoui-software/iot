@@ -50,8 +50,8 @@ export default function CartStats() {
         const history = Object.values(data);
         const [todayYear, todayMonth, todayDay] = getFormattedDate();
         history.forEach((item) => {
-          if (!item?.date) return;
-          const [year, month, day] = item.date.split("-");
+          if (!item?.timestamp?.date) return;
+          const [year, month, day] = item.timestamp.date.split("-");
           if (day == todayDay && month == todayMonth && year == todayYear) {
             todayC = todayC + 1;
           }
