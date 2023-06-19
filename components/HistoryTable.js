@@ -20,9 +20,9 @@ export default function HistoryTable({ historicalData }) {
           {historicalData.map((item) =>
             (
               <TableRow key={item.uid}>
-                <TableCell>{item.timestamp.date}</TableCell>
-                <TableCell>{item.timestamp.time}</TableCell>
-                <TableCell>{item.uid}</TableCell>
+                <TableCell>{item?.timestamp?.date}</TableCell>
+                <TableCell>{item?.timestamp?.time}</TableCell>
+                <TableCell>{item?.uid}</TableCell>
               </TableRow>
             ) 
           )}

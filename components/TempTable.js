@@ -40,9 +40,9 @@ const TempTable = ({ tempData }) => {
             {tempData.map((item) =>
               (
                 <TableRow>
-                  <TableCell>{item.timestamp.date}</TableCell>
-                  <TableCell>{item.timestamp.time}</TableCell>
-                  <TableCell>{item.temperature}°C</TableCell>
+                  <TableCell>{item?.timestamp?.date}</TableCell>
+                  <TableCell>{item?.timestamp?.time}</TableCell>
+                  <TableCell>{item?.temperature}°C</TableCell>
                 </TableRow>
               ) 
             )}
